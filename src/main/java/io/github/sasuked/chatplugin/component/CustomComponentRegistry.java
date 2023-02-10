@@ -28,6 +28,8 @@ public class CustomComponentRegistry {
     }
 
     public void loadComponents() {
+        customComponentMap.clear();
+
         ConfigurationSection root = plugin.getConfig().getConfigurationSection("custom-components");
         if (root == null) return;
 

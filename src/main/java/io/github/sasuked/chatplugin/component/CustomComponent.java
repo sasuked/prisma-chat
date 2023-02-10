@@ -2,7 +2,6 @@ package io.github.sasuked.chatplugin.component;
 
 import io.github.sasuked.chatplugin.util.ComponentUtil;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.ClickEvent.Action;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -38,6 +37,7 @@ public record CustomComponent(
 
         Action clickEventAction = null;
         String clickEventValue = null;
+
         if (clickSection != null) {
             clickEventAction = actionFromName(clickSection.getString("action"));
             clickEventValue = clickSection.getString("value");

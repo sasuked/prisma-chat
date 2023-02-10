@@ -1,8 +1,10 @@
 package io.github.sasuked.chatplugin.channel;
 
 import io.github.sasuked.chatplugin.ChatPlugin;
+import io.github.sasuked.chatplugin.command.ChatMessageCommand;
 import io.github.sasuked.chatplugin.component.CustomComponent;
 import io.github.sasuked.chatplugin.event.ChatChannelMessageEvent;
+import io.github.sasuked.chatplugin.util.CommandMapProvider;
 import io.github.sasuked.chatplugin.util.ComponentUtil;
 import io.github.sasuked.chatplugin.util.pattern.ColorHelper;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -27,7 +29,7 @@ public class ChatChannelManager {
 
     private final ChatPlugin plugin;
 
-    private final Map<String , ChatChannel> chatChannelMap = new HashMap<>();
+    private final Map<String, ChatChannel> chatChannelMap = new HashMap<>();
 
     public ChatChannelManager(ChatPlugin plugin) {
         this.plugin = plugin;
@@ -44,10 +46,19 @@ public class ChatChannelManager {
           .map(channels::getConfigurationSection)
           .filter(Objects::nonNull)
           .map(ChatChannel::fromSection)
-          .peek(channel -> chatChannelMap.put(channel.id(), channel))
+          .peek(this::registerChatChannel)
           .count();
 
         Bukkit.getConsoleSender().sendMessage("[Prisma Chat] Loaded " + count + " chat channels");
+    }
+
+    public void registerChatChannel(ChatChannel chatChannel) {
+        chatChannelMap.put(chatChannel.id(), chatChannel);
+
+        CommandMapProvider.getCommandMap().register(
+          "prisma-chat",
+          new ChatMessageCommand(plugin, chatChannel.commands())
+        );
     }
 
     public ChatChannel getChannelFromCommand(String command) {

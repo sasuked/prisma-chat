@@ -3,6 +3,7 @@ package io.github.sasuked.chatplugin;
 import io.github.sasuked.chatplugin.channel.ChatChannel;
 import io.github.sasuked.chatplugin.channel.ChatChannelManager;
 import io.github.sasuked.chatplugin.command.ChatMessageCommand;
+import io.github.sasuked.chatplugin.command.PrismaChatCommand;
 import io.github.sasuked.chatplugin.component.CustomComponentRegistry;
 import io.github.sasuked.chatplugin.listener.ChatListener;
 import io.github.sasuked.chatplugin.util.CommandMapProvider;
@@ -28,8 +29,9 @@ public final class ChatPlugin extends JavaPlugin {
 
         setupChatChannels();
 
-
         Bukkit.getPluginManager().registerEvents(new ChatListener(this), this);
+
+        CommandMapProvider.getCommandMap().register("prisma-chat", new PrismaChatCommand(this));
     }
 
     @Override
@@ -40,21 +42,12 @@ public final class ChatPlugin extends JavaPlugin {
         }
     }
 
-    private void setupChatChannels() {
+    public void setupChatChannels() {
         chatChannelManager = new ChatChannelManager(this);
         chatChannelManager.loadFromConfig();
-
-        var commandMap = CommandMapProvider.getCommandMap();
-        for (ChatChannel channel : chatChannelManager.values()) {
-            commandMap.register("chatx", new ChatMessageCommand(this, channel.commands()));
-        }
-
-        Bukkit.getConsoleSender().sendMessage(new String[]{
-          "[Prisma Chat] loaded " + chatChannelManager.size() + " channels"
-        });
     }
 
-    private void setupComponents() {
+    public void setupComponents() {
         customComponentRegistry = new CustomComponentRegistry(this);
         customComponentRegistry.loadComponents();
     }

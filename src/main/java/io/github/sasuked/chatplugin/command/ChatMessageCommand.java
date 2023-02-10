@@ -45,10 +45,7 @@ public class ChatMessageCommand extends Command {
             return false;
         }
 
-        String message = StringUtils.join(args, " ");
-        System.out.println(message);
-
-        plugin.getChatChannelManager().handlePlayerMessage(player, channel, message);
+        plugin.getChatChannelManager().handlePlayerMessage(player, channel, StringUtils.join(args, " "));
         return false;
     }
 }

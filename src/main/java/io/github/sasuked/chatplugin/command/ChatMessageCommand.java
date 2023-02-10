@@ -15,6 +15,7 @@ import static java.util.Arrays.asList;
 public class ChatMessageCommand extends Command {
 
     private static final Component CHANNEL_NOT_FOUND = ComponentUtil.text("&cChannel not found!");
+    private static final Component USAGE_MESSAGE = ComponentUtil.text("&cUsage: /<channel> <message>");
 
     private final ChatPlugin plugin;
 
@@ -33,16 +34,19 @@ public class ChatMessageCommand extends Command {
 
         ChatChannel channel = plugin.getChatChannelManager().getChannelFromCommand(commandLabel);
         if (channel == null) {
-
+            plugin.getAdventure().player(player).sendMessage(CHANNEL_NOT_FOUND);
             return false;
         }
 
         if (args.length == 0) {
-            sender.sendMessage("Usage: /" + commandLabel + " <message>");
+            plugin.getAdventure().player(player).sendMessage(USAGE_MESSAGE
+              .replaceText(ComponentUtil.replace("<channel>", commandLabel))
+            );
             return false;
         }
 
-        String message = StringUtils.join(args, " ", 0, args.length);
+        String message = StringUtils.join(args, " ");
+        System.out.println(message);
 
         plugin.getChatChannelManager().handlePlayerMessage(player, channel, message);
         return false;

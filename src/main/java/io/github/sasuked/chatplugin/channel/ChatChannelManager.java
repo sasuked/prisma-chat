@@ -15,10 +15,11 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
-public class ChatChannelManager extends ConcurrentHashMap<String, ChatChannel> {
+public class ChatChannelManager {
 
     private static final String CUSTOM_COMPONENT_FORMAT = "@%s@";
 
@@ -26,24 +27,31 @@ public class ChatChannelManager extends ConcurrentHashMap<String, ChatChannel> {
 
     private final ChatPlugin plugin;
 
+    private final Map<String , ChatChannel> chatChannelMap = new HashMap<>();
+
     public ChatChannelManager(ChatPlugin plugin) {
         this.plugin = plugin;
     }
 
     public void loadFromConfig() {
+        chatChannelMap.clear();
+
         ConfigurationSection channels = plugin.getConfig().getConfigurationSection("channels");
         if (channels == null) return;
 
-        channels.getKeys(false)
+        long count = channels.getKeys(false)
           .stream()
           .map(channels::getConfigurationSection)
           .filter(Objects::nonNull)
           .map(ChatChannel::fromSection)
-          .forEach(channel -> this.put(channel.id(), channel));
+          .peek(channel -> chatChannelMap.put(channel.id(), channel))
+          .count();
+
+        Bukkit.getConsoleSender().sendMessage("[Prisma Chat] Loaded " + count + " chat channels");
     }
 
     public ChatChannel getChannelFromCommand(String command) {
-        return this.values()
+        return chatChannelMap.values()
           .stream()
           .filter(channel -> channel.containsCommand(command))
           .findFirst()
@@ -52,7 +60,7 @@ public class ChatChannelManager extends ConcurrentHashMap<String, ChatChannel> {
 
     @Nullable
     public ChatChannel getDefaultChannel() {
-        return this.values()
+        return chatChannelMap.values()
           .stream()
           .filter(ChatChannel::defaultChat)
           .findFirst()

@@ -71,9 +71,9 @@ public record CustomComponent(
             component = component.clickEvent(clickEvent(clickEventAction, transformer.apply(clickEventValue)));
         }
 
-        if (!hoverText.isEmpty()) {
-            Component hoverComponent = Component.empty();
+        Component hoverComponent = Component.empty();
 
+        if (!hoverText.isEmpty()) {
             Iterator<String> textIterator = hoverText.iterator();
             while (textIterator.hasNext()) {
                 String text = transformer.apply(textIterator.next());
@@ -84,6 +84,6 @@ public record CustomComponent(
             }
         }
 
-        return component;
+        return component.hoverEvent(hoverComponent);
     }
 }

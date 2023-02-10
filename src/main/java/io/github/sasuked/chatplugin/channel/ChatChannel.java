@@ -51,6 +51,10 @@ public record ChatChannel(
     }
 
     private boolean isInRange(Player player, Location location) {
+        if (globalChat) {
+            return true;
+        }
+
         if (!Objects.requireNonNull(location.getWorld()).equals(player.getWorld())) {
             return false;
         }

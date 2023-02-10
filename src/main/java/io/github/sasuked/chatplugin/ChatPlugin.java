@@ -1,8 +1,6 @@
 package io.github.sasuked.chatplugin;
 
-import io.github.sasuked.chatplugin.channel.ChatChannel;
 import io.github.sasuked.chatplugin.channel.ChatChannelManager;
-import io.github.sasuked.chatplugin.command.ChatMessageCommand;
 import io.github.sasuked.chatplugin.command.PrismaChatCommand;
 import io.github.sasuked.chatplugin.component.CustomComponentRegistry;
 import io.github.sasuked.chatplugin.listener.ChatListener;
@@ -28,6 +26,7 @@ public final class ChatPlugin extends JavaPlugin {
         adventure = BukkitAudiences.create(this);
 
         setupChatChannels();
+        setupComponents();
 
         Bukkit.getPluginManager().registerEvents(new ChatListener(this), this);
 

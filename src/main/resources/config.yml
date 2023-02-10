@@ -1,0 +1,114 @@
+# Global Placeholders:
+# %player-name% - Player's name
+# %message% - Message
+# %channel% - Channel name
+
+
+# Custom Components:
+# You can use custom components in the format of '@component-name@'
+# custom coponents can have a hover message, or a click event.
+# for more info, see the wiki: https://github.com/PrismaStudios/prisma-chat/wiki/Custom-Components
+custom-components:
+
+  # The placeholder name this will be used in the format.
+  # example: '@example-component@'
+  example-component:
+    # The text of the component that will be replaced.
+    text: '<solid:FFFFF>Example Component'
+
+    # The hover text of the component.
+    # if you dont want to use it, remove the whole 'hover-text' or set it to ''
+    hover-text:
+      - 'This is an example component'
+      - 'with a hover message'
+
+    # The click event of the component.
+    # if you dont want to use it, remove the whole 'click-event' section
+    click-event:
+      # The action of the click event.
+      # Available actions: OPEN_URL, RUN_COMMAND, SUGGEST_COMMAND, COPY_TO_CLIPBOARD
+      action: 'OPEN_URL'
+      # The value of the click event.
+      # example: 'https://www.google.com'
+      value: 'https://www.google.com'
+
+  player:
+    # Global placeholders are allowed here.
+    text: '%player-name%'
+    hover-text:
+      - 'Click to send a message to %player-name%'
+    click-event:
+      action: 'SUGGEST_COMMAND'
+      # Global placeholders are allowed here.
+      value: '/msg %player-name%'
+
+
+# The chat channels configuration
+# You can add as many channels as you want.
+# and every chat can have custom permission, range, format, etc.
+channels:
+  staff-chat:
+
+    # The name of the channel.
+    display-name: '&aStaff'
+
+    # The permission required to use the channel.
+    permission: 'staffchat.use'
+
+    # The format of the message.
+    # You can use custom components here, see the wiki for more info.
+    # Note that @player@ is the custom component 'player' above
+    format: '&b[STAFF] &r@player@ &b» &b%message%'
+
+    # If this property is set to true, the channel will be the default chat
+    # and the messages will be sent to all players, regardless of the channel
+    default-chat: false
+
+    # If this property is set to true, the channel will be global
+    # and the messages will be sent to all players, regardless of the range
+    global-chat: true
+
+    # The range of the chat, if you want to disable it, set 'range' to -1
+    # NOTE: if the property 'global-chat' is set to true, the range will be ignored
+    range: -1
+
+    # Display a sound when a message is sent
+    # if you want to disable it, set 'enabled' to false or remove
+    # the whole 'message-sound' section
+    message-sound:
+      enabled: true
+      sound: ENTITY_PLAYER_LEVELUP
+      volume: 1
+      pitch: 1
+
+    # The commands that will be used to send a message to the channel.
+    # example: /staff Hello World!
+    commands:
+      - 'staff'
+      - 's'
+      - 'sc'
+
+  global-chat:
+    display-name: '&aGlobal'
+    permission: 'globalchat.use'
+    format: '&7[G] &r@player@ &7» &f%message%'
+    default-chat: false
+    global-chat: true
+    range: -1
+    commands:
+      - 'global'
+      - 'g'
+      - 'globalchat'
+
+  local-chat:
+    display-name: '&aLocal'
+    permission: 'localchat.use'
+    format: '&e[L] &r@player@ &e» &e%message%'
+    default-chat: true
+    global-chat: false
+    range: 100
+    commands:
+      - 'local'
+      - 'l'
+      - 'lc'
+

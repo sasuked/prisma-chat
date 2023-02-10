@@ -1,0 +1,5 @@
+name: PrismaChat
+version: '${version}'
+main: io.github.sasuked.chatplugin.ChatPlugin
+softdepend:
+  - PlaceholderAPI

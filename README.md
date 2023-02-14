@@ -15,7 +15,7 @@ This is a Spigot chat plugin for Minecraft version 1.17.1 and above, written in 
 The plugin comes with a `config.yml` file that allows you to configure the chat channels, custom components, and more. Make sure to edit this file to your liking before starting your server.
 
 ## Commands
-- '/prismachat' - reloads the plugin configuration.
+- `/prismachat` - reloads the plugin configuration.
 - `/tell <player> <message>` - Sends a private message to a player
 - `/reply <message>` - Replies to the last private message received
 

@@ -4,7 +4,7 @@
 # %channel% - Channel name
 
 # RGB FORMATS:
-# <#RRGGBB> - RGB color
+# <#RRGGBB> msg - RGB color
 # <rainbow[saturation]> msg </rainbow> - Rainbow color
 # <gradient:#FFFFFF> msg </gradient:#000000> - Gradient color
 
@@ -13,12 +13,11 @@
 # custom components can have a hover message, or a click event.
 # for more info, see the wiki: https://github.com/PrismaStudios/prisma-chat/wiki/Custom-Components
 custom-components:
-
   # The placeholder name this will be used in the format.
   # example: '@example-component@'
   example-component:
     # The text of the component that will be replaced.
-    text: '<solid:FFFFF>Example Component'
+    text: '<#FFFFF>Example Component'
 
     # The hover text of the component.
     # if you dont want to use it, remove the whole 'hover-text' or set it to ''
@@ -68,10 +67,6 @@ channels:
     # and the messages will be sent to all players, regardless of the channel
     default-chat: false
 
-    # If this property is set to true, the channel will be global
-    # and the messages will be sent to all players, regardless of the range
-    global-chat: true
-
     # The range of the chat, if you want to disable it, set 'range' to -1
     # NOTE: if the property 'global-chat' is set to true, the range will be ignored
     range: -1
@@ -97,7 +92,6 @@ channels:
     permission: 'globalchat.use'
     format: '&7[G] &r@player@ &7» &f%message%'
     default-chat: false
-    global-chat: true
     range: -1
     commands:
       - 'global'
@@ -109,7 +103,6 @@ channels:
     permission: 'localchat.use'
     format: '&e[L] &r@player@ &e» &e%message%'
     default-chat: true
-    global-chat: false
     range: 100
     commands:
       - 'local'

@@ -39,6 +39,11 @@ public class ChatMessageCommand extends Command {
             return false;
         }
 
+        if (!channel.isPlayerPermitted(player)) {
+            player.sendMessage("§cYou don't have permission to use this command!");
+            return false;
+        }
+
         if (args.length == 0) {
             plugin.getAdventure().player(player).sendMessage(USAGE_MESSAGE
               .replaceText(ComponentUtil.replace("<channel>", commandLabel))

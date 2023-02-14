@@ -22,7 +22,6 @@ public class ChatMessageController {
         var message = chatMessage.getMessageFormatter().formatMessage(event.getChatMessage());
         var sound = event.getChatMessage().getSound();
 
-
         BukkitAudiences bukkitAudiences = plugin.getAdventure();
         for (Player player : chatMessage.getReceivers()) {
             Audience receiver = bukkitAudiences.player(player);

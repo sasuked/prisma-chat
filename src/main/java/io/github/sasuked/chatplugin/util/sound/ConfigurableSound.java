@@ -12,6 +12,10 @@ public record ConfigurableSound(boolean enabled, Sound sound, float volume, floa
 
     private static final ConfigurableSound DEFAULT = new ConfigurableSound(false, null, 0, 0);
 
+    public static ConfigurableSound of(Sound sound, float volume, float pitch) {
+        return new ConfigurableSound(true, sound, volume, pitch);
+    }
+
     public static ConfigurableSound fromSection(@Nullable ConfigurationSection section) {
         if (section == null) {
             return DEFAULT;

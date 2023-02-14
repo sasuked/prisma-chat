@@ -2,7 +2,6 @@ package io.github.sasuked.chatplugin.util;
 
 import io.github.sasuked.chatplugin.util.pattern.ColorHelper;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.jetbrains.annotations.NotNull;
@@ -14,10 +13,9 @@ public class ComponentUtil {
       .character('§')
       .build();
 
-    public static TextComponent text(@NotNull String message) {
+    public static Component text(@NotNull String message) {
         return LEGACY_COMPONENT_SERIALIZER.deserialize(ColorHelper.process(message));
     }
-
 
     @NotNull
     public static TextReplacementConfig replace(@NotNull String a, @NotNull String b) {

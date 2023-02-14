@@ -1,10 +1,11 @@
 package io.github.sasuked.chatplugin.command;
 
 import io.github.sasuked.chatplugin.ChatPlugin;
-import io.github.sasuked.chatplugin.channel.ChatChannel;
+import io.github.sasuked.chatplugin.message.ChatChannelMessage;
 import io.github.sasuked.chatplugin.util.ComponentUtil;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -32,7 +33,7 @@ public class ChatMessageCommand extends Command {
             return false;
         }
 
-        ChatChannel channel = plugin.getChatChannelManager().getChannelFromCommand(commandLabel);
+        var channel = plugin.getChatChannelManager().getChannelFromCommand(commandLabel);
         if (channel == null) {
             plugin.getAdventure().player(player).sendMessage(CHANNEL_NOT_FOUND);
             return false;
@@ -45,7 +46,21 @@ public class ChatMessageCommand extends Command {
             return false;
         }
 
-        plugin.getChatChannelManager().handlePlayerMessage(player, channel, StringUtils.join(args, " "));
+        var message = StringUtils.join(args, " ");
+        var receivers = Bukkit.getOnlinePlayers()
+          .stream()
+          .filter(receiver -> channel.canReceiveMessage(player, receiver))
+          .toList();
+
+        plugin.getChatMessageController().sendChatMessage(new ChatChannelMessage(
+          player,
+          message,
+          channel.messageSound(),
+          receivers,
+          channel
+        ));
+
+
         return false;
     }
 }

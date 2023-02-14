@@ -3,10 +3,14 @@
 # %message% - Message
 # %channel% - Channel name
 
+# RGB FORMATS:
+# <#RRGGBB> - RGB color
+# <rainbow[saturation]> msg </rainbow> - Rainbow color
+# <gradient:#FFFFFF> msg </gradient:#000000> - Gradient color
 
 # Custom Components:
 # You can use custom components in the format of '@component-name@'
-# custom coponents can have a hover message, or a click event.
+# custom components can have a hover message, or a click event.
 # for more info, see the wiki: https://github.com/PrismaStudios/prisma-chat/wiki/Custom-Components
 custom-components:
 
@@ -112,3 +116,14 @@ channels:
       - 'l'
       - 'lc'
 
+whisper:
+  # The format of the whisper message.
+  # You can use custom components here, see the wiki for more info.
+  # Note that @player@ is the custom component 'player' above
+  whisper-format: '&7[TELL] &r@player@ &7» &f%message%'
+
+  whisper-sound:
+    enabled: true
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1
+    pitch: 1

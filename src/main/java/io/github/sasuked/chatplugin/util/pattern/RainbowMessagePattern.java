@@ -10,9 +10,9 @@ import static java.util.regex.Pattern.compile;
  */
 public class RainbowMessagePattern extends MessagePattern {
 
-    // <rainbow> msg </rainbow>
+    // <rainbow[saturation]> msg </rainbow>
     public RainbowMessagePattern() {
-        super(compile("<rainbow([0-9]{1,3})>(.*?)</rainbow>"));
+        super(compile("<rainbow\\[([0-9]{1,3})]>(.*?)</rainbow>"));
     }
 
     /**

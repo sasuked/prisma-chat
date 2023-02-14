@@ -24,5 +24,3 @@ We follow the Java code style guidelines established by [Google Java Style Guide
 ## License
 
 By contributing to My Spigot Chat Plugin, you agree that your contributions will be licensed under the MIT License. Please see the `LICENSE` file for more information.
-
-Thank you for your contributions to My Spigot Chat Plugin!

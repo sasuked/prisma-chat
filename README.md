@@ -24,7 +24,7 @@ The plugin comes with a `config.yml` file that allows you to configure the chat 
 This plugin supports the Placeholder API, which allows you to use placeholders in your chat messages. For more information on how to use the Placeholder API, please visit [the Placeholder API wiki](https://github.com/PlaceholderAPI/PlaceholderAPI/wiki).
 
 ## Issues and Contributions
-If you encounter any issues with the plugin or would like to contribute, please see the [Contributing](https://github.com/sasuked/prisma-chat/issues) file and open an issue or pull request. 
+If you encounter any issues with the plugin or would like to contribute, please see the [Contributing](https://github.com/sasuked/prisma-chat/blob/master/CONTRIBUTING.md) file and open an issue or pull request. 
 
 ## License
 This plugin is licensed under the MIT License. Please see the `LICENSE` file for more information.

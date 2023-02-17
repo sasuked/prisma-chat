@@ -1,7 +1,6 @@
 package io.github.sasuked.chatplugin.lang;
 
 import io.github.sasuked.chatplugin.util.ComponentUtil;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -9,7 +8,6 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.function.UnaryOperator;
 
 /**
  * This class is used to get messages from the language file.

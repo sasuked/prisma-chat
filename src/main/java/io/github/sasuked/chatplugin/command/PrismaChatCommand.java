@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 public class PrismaChatCommand extends Command {
 
     private final ChatPlugin plugin;
+
     public PrismaChatCommand(ChatPlugin plugin) {
         super("prismachat");
         this.plugin = plugin;
@@ -15,8 +16,9 @@ public class PrismaChatCommand extends Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        if(!sender.hasPermission("prismachat.admin")) {
-            sender.sendMessage("You don't have permission to use this command!");
+        var audience = plugin.getAdventure().sender(sender);
+        if (!sender.hasPermission("prismachat.admin")) {
+            audience.sendMessage(plugin.getLanguageManager().getMessageComponent("no-permission"));
             return false;
         }
 
@@ -24,7 +26,7 @@ public class PrismaChatCommand extends Command {
         plugin.setupComponents();
         plugin.setupChatChannels();
 
-
+        audience.sendMessage(plugin.getLanguageManager().getMessageComponent("reload-message"));
         return false;
     }
 }

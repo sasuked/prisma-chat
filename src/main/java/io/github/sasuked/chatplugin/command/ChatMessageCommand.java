@@ -15,8 +15,7 @@ import static java.util.Arrays.asList;
 
 public class ChatMessageCommand extends Command {
 
-    private static final Component CHANNEL_NOT_FOUND = ComponentUtil.text("&cChannel not found!");
-    private static final Component USAGE_MESSAGE = ComponentUtil.text("&cUsage: /<channel> <message>");
+    private static final Component USAGE_MESSAGE = ComponentUtil.text("&c/%channel% <message>");
 
     private final ChatPlugin plugin;
 
@@ -29,25 +28,31 @@ public class ChatMessageCommand extends Command {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("Only players can use this command!");
+            sender.sendMessage(plugin.getLanguageManager().getMessage("player-only-command"));
             return false;
         }
 
+        var adventurePlayer = plugin.getAdventure().player(player);
+
         var channel = plugin.getChatChannelManager().getChannelFromCommand(commandLabel);
         if (channel == null) {
-            plugin.getAdventure().player(player).sendMessage(CHANNEL_NOT_FOUND);
+            adventurePlayer.sendMessage(plugin.getLanguageManager()
+              .getMessageComponent("channel-not-found")
+              .replaceText(ComponentUtil.replace("%channel%", commandLabel))
+            );
             return false;
         }
 
         if (!channel.isPlayerPermitted(player)) {
-            player.sendMessage("§cYou don't have permission to use this command!");
+            adventurePlayer.sendMessage(plugin.getLanguageManager()
+              .getMessageComponent("channel-not-permitted")
+              .replaceText(ComponentUtil.replace("%channel%", commandLabel))
+            );
             return false;
         }
 
         if (args.length == 0) {
-            plugin.getAdventure().player(player).sendMessage(USAGE_MESSAGE
-              .replaceText(ComponentUtil.replace("<channel>", commandLabel))
-            );
+            adventurePlayer.sendMessage(USAGE_MESSAGE.replaceText(ComponentUtil.replace("%channel%", commandLabel)));
             return false;
         }
 
@@ -64,7 +69,6 @@ public class ChatMessageCommand extends Command {
           receivers,
           channel
         ));
-
 
         return false;
     }

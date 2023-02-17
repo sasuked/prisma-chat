@@ -2,14 +2,16 @@ package io.github.sasuked.chatplugin.command;
 
 import io.github.sasuked.chatplugin.ChatPlugin;
 import io.github.sasuked.chatplugin.message.WhisperMessage;
-import io.github.sasuked.chatplugin.util.PlayerProvider;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+
+import static io.github.sasuked.chatplugin.util.ComponentUtil.replace;
 
 public class TellCommand extends Command {
 
@@ -23,20 +25,24 @@ public class TellCommand extends Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+        var audience = plugin.getAdventure().sender(sender);
         if (!sender.hasPermission("prismachat.tell")) {
-            sender.sendMessage("You don't have permission to use this command!");
+            audience.sendMessage(plugin.getLanguageManager().getMessageComponent("no-permission"));
             return false;
         }
 
         if (args.length == 0) {
-            sender.sendMessage("Usage: /tell <player> <message>");
+            sender.sendMessage("§c/tell <player> <message>");
             return false;
         }
 
 
-        var receiver = PlayerProvider.getPlayer(args[0]);
+        var receiver = Bukkit.getPlayer(args[0]);
         if (receiver == null) {
-            sender.sendMessage("Player not found!");
+            audience.sendMessage(plugin.getLanguageManager()
+              .getMessageComponent("player-not-found")
+              .replaceText(replace("%player-name%", args[0]))
+            );
             return false;
         }
 

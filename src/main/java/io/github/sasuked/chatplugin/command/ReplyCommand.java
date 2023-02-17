@@ -23,20 +23,21 @@ public class ReplyCommand extends Command {
             sender.sendMessage("You must be a player to use this command!");
             return false;
         }
+        var adventurePlayer = plugin.getAdventure().player(player);
 
         if (!player.hasPermission("prismachat.reply")) {
-            sender.sendMessage("You don't have permission to use this command!");
+            adventurePlayer.sendMessage(plugin.getLanguageManager().getMessageComponent("no-permission"));
             return false;
         }
 
         if (args.length == 0) {
-            player.sendMessage("Usage: /reply <message>");
+            player.sendMessage("§c/reply <message>");
             return false;
         }
 
         var lastMessageSender = plugin.getWhisperManager().getLastMessageSender(player);
         if (lastMessageSender == null) {
-            player.sendMessage("You don't have anyone to reply.");
+            adventurePlayer.sendMessage(plugin.getLanguageManager().getMessageComponent("no-recent-messages"));
             return false;
         }
 

@@ -5,9 +5,9 @@ import io.github.sasuked.chatplugin.command.PrismaChatCommand;
 import io.github.sasuked.chatplugin.command.ReplyCommand;
 import io.github.sasuked.chatplugin.command.TellCommand;
 import io.github.sasuked.chatplugin.component.CustomComponentRegistry;
+import io.github.sasuked.chatplugin.lang.LanguageManager;
 import io.github.sasuked.chatplugin.listener.ChatListener;
 import io.github.sasuked.chatplugin.message.ChatMessageController;
-import io.github.sasuked.chatplugin.formatter.MessageFormatter;
 import io.github.sasuked.chatplugin.util.CommandMapProvider;
 import io.github.sasuked.chatplugin.whisper.WhisperManager;
 import lombok.Getter;
@@ -15,12 +15,15 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.Arrays;
 
 @Getter
 public final class ChatPlugin extends JavaPlugin {
 
+
     private BukkitAudiences adventure;
+    private LanguageManager languageManager;
     private ChatChannelManager chatChannelManager;
     private CustomComponentRegistry customComponentRegistry;
     private WhisperManager whisperManager;
@@ -28,20 +31,20 @@ public final class ChatPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        saveDefaultConfig();
-
         adventure = BukkitAudiences.create(this);
 
+        saveDefaultConfig();
+        setupLanguage();
         setupChatChannels();
         setupComponents();
         setupWhisperManager();
 
         chatMessageController = new ChatMessageController(this);
 
+
         Bukkit.getPluginManager().registerEvents(new ChatListener(this), this);
 
-        var commandMap = CommandMapProvider.getCommandMap();
-        commandMap.registerAll("prisma-chat", Arrays.asList(
+        CommandMapProvider.getCommandMap().registerAll("prisma-chat", Arrays.asList(
           new PrismaChatCommand(this),
           new TellCommand(this),
           new ReplyCommand(this)
@@ -71,12 +74,20 @@ public final class ChatPlugin extends JavaPlugin {
         customComponentRegistry.loadComponents();
     }
 
+    public void setupLanguage() {
+        File file = new File(getDataFolder(), "lang/messages_en_US.yml");
+        if (!file.exists()) {
+            saveResource("lang/messages_en_US.yml", false);
+        }
+
+        languageManager = LanguageManager.resolve(this, getConfig().getString("language", "en_US"));
+    }
+
     public BukkitAudiences adventure() {
         if (this.adventure == null) {
             throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
         }
         return this.adventure;
     }
-
 
 }

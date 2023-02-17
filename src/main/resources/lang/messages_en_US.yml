@@ -1,0 +1,28 @@
+# This is the message when the plugin reloads
+reload-message: '&aThe plugin has been reloaded.'
+
+# The message that will be sent when a specific player is not found
+player-not-found: '&cThe player &e%player-name% &cwas not found.'
+
+# The message that will be sent to the player when he tries to send a message
+# to a channel that he doesn't have permission to use
+no-permission: '&cYou do not have permission to use this command.'
+
+# The message that will be sent to the player when he tries to send a message
+player-only-command: '&cThis command can only be executed by a player.'
+
+# The message that will be sent to the player when he tries to send a message
+#
+# %channel% will be replaced by the channel name
+channel-not-found: '&cThe channel &e%channel% &cwas not found.'
+
+# The message that will be sent to the player when he tries to send a message
+# to a channel that he doesn't have permission to use.
+#
+# %channel% will be replaced by the channel name
+channel-not-permitted: '&cYou do not have permission to use this channel.'
+
+# The message that will be sent to the player when he tries to use the
+# /reply command without having any recent messages
+no-recent-messages: '&cThere are no recent messages to reply to.'
+

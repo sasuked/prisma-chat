@@ -1,3 +1,8 @@
+# Choose the language file to use.
+# Available languages: 'en_US', 'pt_BR'
+language: 'en_US'
+
+
 # Global Placeholders:
 # %player-name% - Player's name
 # %message% - Message

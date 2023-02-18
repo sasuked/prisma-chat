@@ -1,8 +1,3 @@
-# Choose the language file to use.
-# Available languages: 'en_US', 'pt_BR'
-language: 'en_US'
-
-
 # Global Placeholders:
 # %player-name% - Player's name
 # %message% - Message
@@ -12,6 +7,24 @@ language: 'en_US'
 # <#RRGGBB> msg - RGB color
 # <rainbow[saturation]> msg </rainbow> - Rainbow color
 # <gradient:#FFFFFF> msg </gradient:#000000> - Gradient color
+
+# Choose the language file to use.
+# Available languages: 'en_US', 'pt_BR'
+language: 'en_US'
+
+
+# Clear chat settings.
+clear-chat:
+  # The amount of lines to clear.
+  lines: 100
+
+  # The sound when the chat is cleared.
+  sound:
+    enabled: true
+    sound: ENTITY_PLAYER_LEVELUP
+    volume: 1
+    pitch: 1
+
 
 # Custom Components:
 # You can use custom components in the format of '@component-name@'

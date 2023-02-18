@@ -1,10 +1,12 @@
 package io.github.sasuked.chatplugin.util.sound;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,6 +16,10 @@ public record ConfigurableSound(boolean enabled, Sound sound, float volume, floa
 
     public static ConfigurableSound of(Sound sound, float volume, float pitch) {
         return new ConfigurableSound(true, sound, volume, pitch);
+    }
+
+    public static ConfigurableSound fromSection(Plugin plugin, String sectionName) {
+        return fromSection(plugin.getConfig().getConfigurationSection(sectionName));
     }
 
     public static ConfigurableSound fromSection(@Nullable ConfigurationSection section) {
@@ -48,6 +54,16 @@ public record ConfigurableSound(boolean enabled, Sound sound, float volume, floa
         World world = location.getWorld();
         if (world != null) {
             world.playSound(location, sound, volume, pitch);
+        }
+    }
+
+    public void play(){
+        if (sound == null || !enabled) {
+            return;
+        }
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.playSound(player.getLocation(), sound, volume, pitch);
         }
     }
 }

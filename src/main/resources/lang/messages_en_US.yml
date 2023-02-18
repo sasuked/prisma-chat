@@ -26,3 +26,9 @@ channel-not-permitted: '&cYou do not have permission to use this channel.'
 # /reply command without having any recent messages
 no-recent-messages: '&cThere are no recent messages to reply to.'
 
+# The message when a anonymous clear chat command is executed.
+clear-chat-anonymous: '&cThe chat has been cleared by an administrator.'
+
+# The message when a clear chat command is executed by a player.
+clear-chat: '&cThe chat has been cleared by &e%player-name%&c.'
+

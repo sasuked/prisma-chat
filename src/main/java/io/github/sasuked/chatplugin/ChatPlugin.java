@@ -1,6 +1,7 @@
 package io.github.sasuked.chatplugin;
 
 import io.github.sasuked.chatplugin.channel.ChatChannelManager;
+import io.github.sasuked.chatplugin.command.ClearChatCommand;
 import io.github.sasuked.chatplugin.command.PrismaChatCommand;
 import io.github.sasuked.chatplugin.command.ReplyCommand;
 import io.github.sasuked.chatplugin.command.TellCommand;
@@ -20,7 +21,6 @@ import java.util.Arrays;
 
 @Getter
 public final class ChatPlugin extends JavaPlugin {
-
 
     private BukkitAudiences adventure;
     private LanguageManager languageManager;
@@ -47,7 +47,8 @@ public final class ChatPlugin extends JavaPlugin {
         CommandMapProvider.getCommandMap().registerAll("prisma-chat", Arrays.asList(
           new PrismaChatCommand(this),
           new TellCommand(this),
-          new ReplyCommand(this)
+          new ReplyCommand(this),
+          new ClearChatCommand(this)
         ));
     }
 
@@ -82,12 +83,4 @@ public final class ChatPlugin extends JavaPlugin {
 
         languageManager = LanguageManager.resolve(this, getConfig().getString("language", "en_US"));
     }
-
-    public BukkitAudiences adventure() {
-        if (this.adventure == null) {
-            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
-        }
-        return this.adventure;
-    }
-
 }

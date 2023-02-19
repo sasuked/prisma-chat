@@ -1,6 +1,7 @@
 package io.github.sasuked.chatplugin.command;
 
 import io.github.sasuked.chatplugin.ChatPlugin;
+import io.github.sasuked.chatplugin.lang.LanguageKeys;
 import io.github.sasuked.chatplugin.lang.LanguageManager;
 import io.github.sasuked.chatplugin.util.sound.ConfigurableSound;
 import org.apache.commons.lang.StringUtils;
@@ -9,15 +10,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.stream.IntStream;
-
 public class ClearChatCommand extends Command {
 
-    private static final String CLEAR_CHAT_LINES_KEY = "clear-chat.lines";
-    private static final String CLEAR_CHAT_SOUND_KEY = "clear-chat.sound";
-
-    private static final String CLEAR_CHAT_ANONYMOUS_KEY = "clear-chat-anonymous";
-    private static final String CLEAR_CHAT_KEY = "clear-chat";
+    private static final String CLEAR_CHAT_LINES_PATH = "clear-chat.lines";
+    private static final String CLEAR_CHAT_SOUND_PATH = "clear-chat.sound";
 
     private final ChatPlugin plugin;
     private final LanguageManager languageManager;
@@ -31,23 +27,27 @@ public class ClearChatCommand extends Command {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (!sender.hasPermission("prismachat.clearchat")) {
-            plugin.getAdventure().sender(sender)
-              .sendMessage(languageManager.getMessageComponent("no-permission"));
+            plugin.getLanguageManager().sendLocalizedMessage(sender, LanguageKeys.NO_PERMISSION);
             return false;
         }
 
+        // TODO: Add a permission to clear chat anonymously
         var anonymous = args.length > 0 && args[0].equalsIgnoreCase("-a");
-        var clearChatLines = plugin.getConfig().getInt(CLEAR_CHAT_LINES_KEY, 100);
+        if (anonymous && !sender.hasPermission("prismachat.clearchat.anonymous")) {
+            plugin.getLanguageManager().sendLocalizedMessage(sender, LanguageKeys.NO_PERMISSION);
+            return false;
+        }
 
-        IntStream.range(0, clearChatLines)
-          .mapToObj(i -> StringUtils.EMPTY)
-          .forEach(Bukkit::broadcastMessage);
+        var clearChatLines = plugin.getConfig().getInt(CLEAR_CHAT_LINES_PATH, 100);
+        for (int i = 0; i < clearChatLines; i++) {
+            String empty = StringUtils.EMPTY;
+            Bukkit.broadcastMessage(empty);
+        }
 
-        plugin.getAdventure()
-          .players()
-          .sendMessage(languageManager.getMessageComponent(anonymous ? CLEAR_CHAT_ANONYMOUS_KEY : CLEAR_CHAT_KEY));
+        plugin.getLanguageManager()
+          .broadcastLocalizedMessage(anonymous ? LanguageKeys.CLEAR_CHAT_ANONYMOUS : LanguageKeys.CLEAR_CHAT);
 
-        var configurableSound = ConfigurableSound.fromSection(plugin , CLEAR_CHAT_SOUND_KEY);
+        var configurableSound = ConfigurableSound.fromSection(plugin, CLEAR_CHAT_SOUND_PATH);
         configurableSound.play();
         return false;
     }

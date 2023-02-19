@@ -4,7 +4,6 @@ import io.github.sasuked.chatplugin.ChatPlugin;
 import io.github.sasuked.chatplugin.event.ChatMessageEvent;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.entity.Player;
 
 @RequiredArgsConstructor
@@ -20,9 +19,12 @@ public class ChatMessageController {
         }
 
         var message = chatMessage.getMessageFormatter().formatMessage(event.getChatMessage());
+        // TODO add permission to send colored messages
+        // TODO add filters (anti-spam, anti-advertising, etc)
+
         var sound = event.getChatMessage().getSound();
 
-        BukkitAudiences bukkitAudiences = plugin.getAdventure();
+        var bukkitAudiences = plugin.getAdventure();
         for (Player player : chatMessage.getReceivers()) {
             Audience receiver = bukkitAudiences.player(player);
             receiver.sendMessage(message);

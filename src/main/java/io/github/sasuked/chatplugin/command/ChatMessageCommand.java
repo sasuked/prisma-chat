@@ -1,9 +1,8 @@
 package io.github.sasuked.chatplugin.command;
 
 import io.github.sasuked.chatplugin.ChatPlugin;
+import io.github.sasuked.chatplugin.lang.LanguageKeys;
 import io.github.sasuked.chatplugin.message.ChatChannelMessage;
-import io.github.sasuked.chatplugin.util.ComponentUtil;
-import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -14,8 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import static java.util.Arrays.asList;
 
 public class ChatMessageCommand extends Command {
-
-    private static final Component USAGE_MESSAGE = ComponentUtil.text("&c/%channel% <message>");
 
     private final ChatPlugin plugin;
 
@@ -28,31 +25,28 @@ public class ChatMessageCommand extends Command {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(plugin.getLanguageManager().getMessage("player-only-command"));
+            plugin.getLanguageManager()
+              .sendLocalizedMessage(sender, LanguageKeys.PLAYER_ONLY_COMMAND);
             return false;
         }
 
-        var adventurePlayer = plugin.getAdventure().player(player);
 
         var channel = plugin.getChatChannelManager().getChannelFromCommand(commandLabel);
         if (channel == null) {
-            adventurePlayer.sendMessage(plugin.getLanguageManager()
-              .getMessageComponent("channel-not-found")
-              .replaceText(ComponentUtil.replace("%channel%", commandLabel))
-            );
+            plugin.getLanguageManager()
+              .sendLocalizedMessage(player, LanguageKeys.CHANNEL_NOT_FOUND, "%channel%", commandLabel);
             return false;
         }
 
         if (!channel.isPlayerPermitted(player)) {
-            adventurePlayer.sendMessage(plugin.getLanguageManager()
-              .getMessageComponent("channel-not-permitted")
-              .replaceText(ComponentUtil.replace("%channel%", commandLabel))
-            );
+            plugin.getLanguageManager()
+              .sendLocalizedMessage(player, LanguageKeys.CHANNEL_NOT_PERMITTED, "%channel%", commandLabel);
             return false;
         }
 
         if (args.length == 0) {
-            adventurePlayer.sendMessage(USAGE_MESSAGE.replaceText(ComponentUtil.replace("%channel%", commandLabel)));
+            plugin.getLanguageManager()
+              .sendLocalizedMessage(player, LanguageKeys.COMMAND_USAGE, "%command-usage%", commandLabel + " <message>");
             return false;
         }
 
@@ -62,14 +56,10 @@ public class ChatMessageCommand extends Command {
           .filter(receiver -> channel.canReceiveMessage(player, receiver))
           .toList();
 
-        plugin.getChatMessageController().sendChatMessage(new ChatChannelMessage(
-          player,
-          message,
-          channel.messageSound(),
-          receivers,
-          channel
-        ));
-
+        var chatMessage = new ChatChannelMessage(player, message, channel.messageSound(), receivers, channel);
+        plugin.getChatMessageController().sendChatMessage(chatMessage);
         return false;
     }
+
+
 }

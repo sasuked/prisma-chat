@@ -1,3 +1,6 @@
+# Command usage message
+command-usage: '&cUsage: /%command-usage%'
+
 # This is the message when the plugin reloads
 reload-message: '&aThe plugin has been reloaded.'
 

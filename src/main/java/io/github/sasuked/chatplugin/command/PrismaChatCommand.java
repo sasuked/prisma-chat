@@ -1,6 +1,7 @@
 package io.github.sasuked.chatplugin.command;
 
 import io.github.sasuked.chatplugin.ChatPlugin;
+import io.github.sasuked.chatplugin.lang.LanguageKeys;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -16,17 +17,24 @@ public class PrismaChatCommand extends Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        var audience = plugin.getAdventure().sender(sender);
         if (!sender.hasPermission("prismachat.admin")) {
-            audience.sendMessage(plugin.getLanguageManager().getMessageComponent("no-permission"));
+            plugin.getLanguageManager().sendLocalizedMessage(sender, LanguageKeys.NO_PERMISSION);
             return false;
         }
 
-        plugin.reloadConfig();
-        plugin.setupComponents();
-        plugin.setupChatChannels();
+        if (args.length == 0) {
+            plugin.getLanguageManager()
+              .sendLocalizedMessage(sender, LanguageKeys.COMMAND_USAGE, "%command-usage%", "prismachat reload");
+            return false;
+        }
 
-        audience.sendMessage(plugin.getLanguageManager().getMessageComponent("reload-message"));
+        if (args[0].equalsIgnoreCase("reload")) {
+            plugin.reloadConfig();
+            plugin.setupComponents();
+            plugin.setupChatChannels();
+
+            plugin.getLanguageManager().sendLocalizedMessage(sender, LanguageKeys.RELOAD_MESSAGE);
+        }
         return false;
     }
 }

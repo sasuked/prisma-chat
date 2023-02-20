@@ -1,6 +1,7 @@
 package io.github.sasuked.chatplugin.command;
 
 import io.github.sasuked.chatplugin.ChatPlugin;
+import io.github.sasuked.chatplugin.lang.LanguageKeys;
 import io.github.sasuked.chatplugin.message.WhisperMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -23,21 +24,21 @@ public class ReplyCommand extends Command {
             sender.sendMessage("You must be a player to use this command!");
             return false;
         }
-        var adventurePlayer = plugin.getAdventure().player(player);
-
         if (!player.hasPermission("prismachat.reply")) {
-            adventurePlayer.sendMessage(plugin.getLanguageManager().getMessageComponent("no-permission"));
+            plugin.getLanguageManager().sendLocalizedMessage(player, LanguageKeys.NO_PERMISSION);
             return false;
         }
 
         if (args.length == 0) {
-            player.sendMessage("§c/reply <message>");
+            plugin.getLanguageManager()
+              .sendLocalizedMessage(player, LanguageKeys.COMMAND_USAGE, "%command-usage%", "r <message>");
             return false;
         }
 
         var lastMessageSender = plugin.getWhisperManager().getLastMessageSender(player);
         if (lastMessageSender == null) {
-            adventurePlayer.sendMessage(plugin.getLanguageManager().getMessageComponent("no-recent-messages"));
+            plugin.getLanguageManager()
+              .sendLocalizedMessage(player, LanguageKeys.NO_RECENT_MESSAGES);
             return false;
         }
 
